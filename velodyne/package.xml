@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>any_velodyne</name>
-  <version>1.5.26</version>
+  <version>1.5.14</version>
   <description>
     Basic ROS support for the Velodyne 3D LIDARs.
   </description>
@@ -17,6 +17,7 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <exec_depend>any_velodyne_driver</exec_depend>
+  <exec_depend>any_velodyne_laserscan</exec_depend>
   <exec_depend>any_velodyne_msgs</exec_depend>
   <exec_depend>any_velodyne_pointcloud</exec_depend>
 

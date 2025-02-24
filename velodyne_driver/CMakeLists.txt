@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5.1)
 project(any_velodyne_driver)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -41,7 +41,7 @@ catkin_package(
 )
 
 include_directories(
-  include
+  include 
   SYSTEM
     ${Boost_INCLUDE_DIR}
     ${catkin_INCLUDE_DIRS}
@@ -51,7 +51,7 @@ include_directories(
 # Libraries #
 #############
 # Socket library.
-add_library(${PROJECT_NAME}_socket
+add_library(${PROJECT_NAME}_socket 
   src/lib/input.cc
 )
 add_dependencies(${PROJECT_NAME}_socket
@@ -167,7 +167,7 @@ install(
 #     http://download.ros.org/data/velodyne/vlp16.pcap
 #     DESTINATION ${CATKIN_DEVEL_PREFIX}/${CATKIN_PACKAGE_SHARE_DESTINATION}/tests
 #     MD5 f45c2bb1d7ee358274e423ea3b66fd73)
-
+  
 #   # unit tests
 #   add_rostest(tests/pcap_node_hertz.test)
 #   add_rostest(tests/pcap_nodelet_hertz.test)
@@ -175,7 +175,7 @@ install(
 #   add_rostest(tests/pcap_32e_nodelet_hertz.test)
 #   add_rostest(tests/pcap_vlp16_node_hertz.test)
 #   add_rostest(tests/pcap_vlp16_nodelet_hertz.test)
-
+  
 #   # parse check all the launch/*.launch files
 #   roslaunch_add_file_check(launch)
 

@@ -108,7 +108,6 @@ public:
 private:
   int sockfd_;
   in_addr devip_;
-  double timeDifferenceThreshold_{0.02}; // [s], see https://git.anybotics.com/anybotics/anybotics/-/issues/12613#note_528488
 };
 
 

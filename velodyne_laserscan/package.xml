@@ -1,49 +1,35 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>any_velodyne_pointcloud</name>
+  <name>any_velodyne_laserscan</name>
   <version>1.5.14</version>
   <description>
-    Point cloud conversions for Velodyne 3D LIDARs.
+    Extract a single ring of a Velodyne PointCloud2 and publish it as a LaserScan message
   </description>
   <maintainer email="ynava@anybotics.com">Yoshua Nava</maintainer>
   <maintainer email="mwulf@anybotics.com">Maximilian Wulf</maintainer>
   <author email="ynava@anybotics.com">Yoshua Nava</author>
-  <author>Jack O'Quin</author>
-  <author>Piyush Khandelwal</author>
-  <author>Jesse Vera</author>
-  <author>Sebastian Pütz</author>
+  <author>Micho Radovnikovich</author>
+  <author>Kevin Hallenbeck</author>
   <license>BSD</license>
-  <url type="website">http://ros.org/wiki/velodyne_pointcloud</url>
+
+  <url type="website">http://ros.org/wiki/velodyne_laserscan</url>
   <url type="repository">https://github.com/ros-drivers/velodyne</url>
   <url type="bugtracker">https://github.com/ros-drivers/velodyne/issues</url>
 
   <buildtool_depend>catkin</buildtool_depend>
 <!--   <build_depend>cmake_clang_tools</build_depend> -->
 
-  <depend>angles</depend>
-  <depend>any_velodyne_driver</depend>
-  <depend>any_velodyne_msgs</depend>
-  <depend>boost</depend>
-  <depend>diagnostic_updater</depend>
   <depend>dynamic_reconfigure</depend>
-  <depend>eigen</depend>
   <depend>nodelet</depend>
   <depend>roscpp</depend>
-  <depend>roslib</depend>
   <depend>sensor_msgs</depend>
-  <depend>tf</depend>
-  <depend>yaml-cpp</depend>
-
-  <exec_depend>any_velodyne_laserscan</exec_depend>
 
 <!--   <test_depend>cmake_code_coverage</test_depend> -->
   <test_depend>gtest</test_depend>
-  <test_depend>rosunit</test_depend>
   <test_depend>roslaunch</test_depend>
   <test_depend>rostest</test_depend>
-  <test_depend>tf2_ros</test_depend>
 
   <export>
-    <nodelet plugin="${prefix}/nodelets.xml"/>
+    <nodelet plugin="${prefix}/nodelets.xml" />
   </export>
 </package>

@@ -7,7 +7,7 @@ uint8 PPS_LOCKED = 2
 uint8 PPS_ERROR = 3
 
 ## Message
-std_msgs/Header  header                             # standard ROS message header
+Header           header                             # standard ROS message header
 std_msgs/Time    lidar_timestamp                    # Parsed lidar internal timestamp
 int32            current_delay_usecs                # Calculated delay between the current time and the lidar polled time
 uint8            pps_lock                           # PPS lock status. This field is expected to take a value from the PPS_XYZ constants previously declared.

@@ -1,7 +1,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>any_velodyne_pcl</name>
-  <version>1.5.26</version>
+  <version>1.5.14</version>
   <description>The velodyne_pcl package</description>
 
   <maintainer email="ynava@anybotics.com">Yoshua Nava</maintainer>
