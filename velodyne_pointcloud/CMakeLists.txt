@@ -16,6 +16,7 @@ set(CATKIN_PACKAGE_DEPENDENCIES
   roslib
   sensor_msgs
   tf
+  rosbag
 )
 
 find_package(catkin REQUIRED

@@ -119,7 +119,7 @@ public:
                         const float intensity, const float time) = 0;
   virtual void newLine() = 0;
 
-  const sensor_msgs::PointCloud2& finishCloud(const ros::Time& stamp)
+  sensor_msgs::PointCloud2& finishCloud(const ros::Time& stamp)
   {
     cloud.header.stamp = stamp;
     cloud.data.resize(cloud.point_step * cloud.width * cloud.height);

@@ -10,5 +10,10 @@
         args="load any_velodyne_laserscan/LaserScanNodelet $(arg manager)">
     <param name="ring" value="$(arg ring)"/>
     <param name="resolution" value="$(arg resolution)"/>
+
+    <!-- <remap from="velodyne_packets" to="/lidar/packets"/>
+    <remap from="velodyne_points"  to="/lidar/point_cloud"/> -->
+
+
   </node>
 </launch>

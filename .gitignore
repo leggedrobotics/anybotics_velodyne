@@ -3,4 +3,5 @@
 *~
 *.user
 doc
+*.vscode
 TAGS

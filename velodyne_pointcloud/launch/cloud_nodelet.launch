@@ -2,11 +2,11 @@
 <!-- run any_velodyne_pointcloud/CloudNodelet in a nodelet manager -->
 
 <launch>
-  <arg name="model" default="" />
+  <arg name="model" default="VLP16" />
   <arg name="calibration" default="" />
   <arg name="manager" default="velodyne_nodelet_manager" />
-  <arg name="fixed_frame" default="velodyne" />
-  <arg name="target_frame" default="velodyne" />
+  <arg name="fixed_frame" default="odom" />
+  <arg name="target_frame" default="lidar" />
   <arg name="max_range" default="130.0" />
   <arg name="min_range" default="0.9" />
   <arg name="organize_cloud" default="false" />
@@ -20,5 +20,9 @@
     <param name="max_range" value="$(arg max_range)"/>
     <param name="min_range" value="$(arg min_range)"/>
     <param name="organize_cloud" value="$(arg organize_cloud)"/>
+
+    <remap from="velodyne_packets" to="/lidar/packets"/>
+    <remap from="velodyne_points"  to="/lidar/point_cloud"/>
+
   </node>
 </launch>

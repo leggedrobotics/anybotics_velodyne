@@ -42,6 +42,10 @@
 
 #include <string>
 #include <ros/ros.h>
+#include <csignal>
+#include <filesystem>
+#include <rosbag/bag.h>
+#include <rosbag/view.h>
 #include "tf/message_filter.h"
 #include "message_filters/subscriber.h"
 #include <diagnostic_updater/diagnostic_updater.h>
@@ -65,9 +69,7 @@ public:
       ros::NodeHandle node,
       ros::NodeHandle private_nh,
       std::string const & node_name = ros::this_node::getName());
-  ~Transform()
-  {
-  }
+  ~Transform();
 
 private:
   void processScan(const any_velodyne_msgs::VelodyneScan::ConstPtr& scanMsg);
@@ -80,6 +82,22 @@ private:
   boost::shared_ptr<velodyne_rawdata::RawData> data_;
   message_filters::Subscriber<any_velodyne_msgs::VelodyneScan> velodyne_scan_;
   ros::Publisher output_;
+
+  // For Replay purposes
+  ros::Publisher outputDistorted_;
+  rosbag::Bag outputBag_;
+  boost::mutex rosbagMutex_;
+  ros::Time bagStartTime_;
+  ros::Time bagEndTime_;
+  ros::Time lastReceivedPacketRosTime_;
+  uint64_t totalNumberOfPackets_ = 0;
+  ros::Time lastPossibleMsgTime_;
+  ros::Time latestCloudStamp_;
+  std::string input_rosbag_path_ = "";
+  std::string output_rosbag_path_ = "";
+  uint64_t duration_ = 0;
+  uint64_t counter_ = 0u;
+
   boost::shared_ptr<tf::MessageFilter<any_velodyne_msgs::VelodyneScan>> tf_filter_ptr_;
   boost::shared_ptr<tf::TransformListener> tf_ptr_;
 
@@ -100,11 +118,6 @@ private:
 
   boost::shared_ptr<velodyne_rawdata::DataContainerBase> container_ptr;
 
-  // diagnostics updater
-  diagnostic_updater::Updater diagnostics_;
-  double diag_min_freq_;
-  double diag_max_freq_;
-  boost::shared_ptr<diagnostic_updater::TopicDiagnostic> diag_topic_;
   boost::mutex reconfigure_mtx_;
 };
 }  // namespace velodyne_pointcloud

@@ -4,7 +4,7 @@
 <launch>
 
   <arg name="device_ip" default="" />
-  <arg name="frame_id" default="velodyne" />
+  <arg name="frame_id" default="lidar" />
   <arg name="manager" default="$(arg frame_id)_nodelet_manager" />
   <arg name="model" default="64E" />
   <arg name="pcap" default="" />

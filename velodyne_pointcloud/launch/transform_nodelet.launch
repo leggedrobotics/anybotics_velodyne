@@ -2,9 +2,13 @@
 <!-- run any_velodyne_pointcloud/TransformNodelet in a nodelet manager -->
 
 <launch>
-  <arg name="model" default="" />
-  <arg name="calibration" default="" />
-  <arg name="frame_id" default="map" />
+
+  <arg name="use_sim_time" default="true"/>
+  <param name="use_sim_time" value="$(arg use_sim_time)"/>
+
+  <arg name="model" default="VLP16" />
+  <arg name="calibration" default="$(find any_velodyne_pointcloud)/params/VLP16db.yaml" />
+  <arg name="frame_id" default="lidar" />
   <arg name="manager" default="velodyne_nodelet_manager" />
   <arg name="max_range" default="130.0" />
   <arg name="min_range" default="0.9" />
@@ -17,5 +21,9 @@
     <param name="max_range" value="$(arg max_range)"/>
     <param name="min_range" value="$(arg min_range)"/>
     <param name="organize_cloud" value="$(arg organize_cloud)"/>
+
+    <!-- <remap from="velodyne_packets" to="/lidar/packets"/>
+    <remap from="velodyne_points"  to="/lidar/point_cloud"/> -->
+
   </node>
 </launch>

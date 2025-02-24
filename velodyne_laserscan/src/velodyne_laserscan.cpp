@@ -54,7 +54,7 @@ void VelodyneLaserScan::connectCb()
   }
   else if (!sub_)
   {
-    sub_ = nh_.subscribe("velodyne_points", 10, &VelodyneLaserScan::recvCallback, this);
+    sub_ = nh_.subscribe("/lidar/points", 10, &VelodyneLaserScan::recvCallback, this);
   }
 }
 

@@ -53,7 +53,7 @@ VelodyneDriver::VelodyneDriver(ros::NodeHandle node,
   : diagnostics_(node, private_nh, node_name)
 {
   // use private node handle to get parameters
-  private_nh.param("frame_id", config_.frame_id, std::string("velodyne"));
+  private_nh.param("frame_id", config_.frame_id, std::string("lidar"));
   std::string tf_prefix = tf::getPrefixParam(private_nh);
   ROS_DEBUG_STREAM("tf_prefix: " << tf_prefix);
   config_.frame_id = tf::resolve(tf_prefix, config_.frame_id);

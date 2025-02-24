@@ -22,12 +22,12 @@ namespace velodyne_pointcloud
 {
   /** @brief Constructor. */
   Convert::Convert(ros::NodeHandle node, ros::NodeHandle private_nh, std::string const & node_name):
-    data_(new velodyne_rawdata::RawData()), first_rcfg_call(true),
+    data_(new velodyne_rawdata::RawData()), first_rcfg_call(false),
     diagnostics_(node, private_nh, node_name)
   {
     // Get startup parameters
-    private_nh.param<std::string>("fixed_frame", config_.fixed_frame, "velodyne");
-    private_nh.param<std::string>("target_Frame", config_.target_frame, "velodyne");
+    private_nh.param<std::string>("fixed_frame", config_.fixed_frame, "odom");
+    private_nh.param<std::string>("target_Frame", config_.target_frame, "lidar");
     private_nh.param<double>("min_range", config_.min_range, 10.0);
     private_nh.param<double>("max_range", config_.max_range, 200.0);
     private_nh.param<bool>("organize_cloud", config_.organize_cloud, false);
@@ -58,10 +58,8 @@ namespace velodyne_pointcloud
               data_->scansPerPacket()));
     }
 
-
-    // advertise output point cloud (before subscribing to input data)
     output_ =
-      node.advertise<sensor_msgs::PointCloud2>("velodyne_points", 10);
+      node.advertise<sensor_msgs::PointCloud2>("/lidar/points_undistorted", 10);
 
     srv_ = boost::make_shared <dynamic_reconfigure::Server<CloudNodeConfig> > (private_nh);
     dynamic_reconfigure::Server<CloudNodeConfig>::CallbackType f;
@@ -70,7 +68,7 @@ namespace velodyne_pointcloud
 
     // subscribe to VelodyneScan packets
     velodyne_scan_ =
-      node.subscribe("velodyne_packets", 10,
+      node.subscribe("/lidar/packets", 10,
                      &Convert::processScan, (Convert *) this,
                      ros::TransportHints().tcpNoDelay(true));
 
@@ -81,7 +79,7 @@ namespace velodyne_pointcloud
     diag_min_freq_ = 2.0;
     diag_max_freq_ = 20.0;
     using namespace diagnostic_updater;
-    diag_topic_.reset(new TopicDiagnostic("velodyne_points", diagnostics_,
+    diag_topic_.reset(new TopicDiagnostic("/lidar/points", diagnostics_,
                                        FrequencyStatusParam(&diag_min_freq_,
                                                             &diag_max_freq_,
                                                             0.1, 10),
@@ -125,8 +123,9 @@ namespace velodyne_pointcloud
   /** @brief Callback for raw scan messages. */
   void Convert::processScan(const any_velodyne_msgs::VelodyneScan::ConstPtr &scanMsg)
   {
-    if (output_.getNumSubscribers() == 0)         // no one listening?
-      return;                                     // avoid much work
+    // if (output_.getNumSubscribers() == 0)         // no one listening?
+    //   return;                                     // avoid much work
+    ROS_INFO_STREAM("Receiving Velodyne Scan Data. convert");
 
     boost::lock_guard<boost::mutex> guard(reconfigure_mtx_);
     // allocate a point cloud with same time and frame ID as raw data
@@ -142,7 +141,7 @@ namespace velodyne_pointcloud
     // publish the accumulated cloud message
     diag_topic_->tick(scanMsg->header.stamp);
     diagnostics_.update();
-    output_.publish(container_ptr_->finishCloud(scanMsg->header.stamp));
+    // output_.publish(container_ptr_->finishCloud(scanMsg->header.stamp));
   }
 
 } // namespace velodyne_pointcloud
