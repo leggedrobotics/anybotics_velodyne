@@ -264,7 +264,7 @@ namespace velodyne_pointcloud
     container_ptr->resetTransformation();
 
     auto writeableScan = container_ptr->finishCloud(referencePointCloudTime);
-    writeableScan.header.frame_id = "velodyne";
+    writeableScan.header.frame_id = "velodyne_lidar";
     {
       boost::lock_guard<boost::mutex> guard(rosbagMutex_);
       outputBag_.write("/anymal/velodyne/points_undistorted", referencePointCloudTime, writeableScan);
@@ -281,7 +281,7 @@ namespace velodyne_pointcloud
     }
 
     auto writeableDistortedScan = container_ptr->finishCloud(scanMsg->header.stamp);
-    writeableDistortedScan.header.frame_id = "velodyne";
+    writeableDistortedScan.header.frame_id = "velodyne_lidar";
     {
       boost::lock_guard<boost::mutex> guard(rosbagMutex_);
       outputBag_.write("/anymal/velodyne/points", scanMsg->header.stamp, writeableDistortedScan);
