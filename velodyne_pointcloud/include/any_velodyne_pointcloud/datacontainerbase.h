@@ -152,15 +152,17 @@ public:
 
   inline Eigen::Vector3f vectorTfToEigen(tf::Vector3& tf_vec)
   {
-    return Eigen::Vector3f(tf_vec[0],  tf_vec[1],  tf_vec[2]);
+    return Eigen::Vector3f(tf_vec[0], tf_vec[1], tf_vec[2]);
   }
 
-  inline bool computeTransformation(const ros::Time& packet_time, const ros::Time& reference_time, const std::string& sensor_frame_id)
+  inline bool computeTransformation(const ros::Time& packet_time, const ros::Time& reference_time,
+                                    const std::string& sensor_frame_id)
   {
     tf::StampedTransform transform;
     try
     {
-      tf_ptr->lookupTransform(config_.target_frame, reference_time, sensor_frame_id, packet_time, config_.fixed_frame, transform);
+      tf_ptr->lookupTransform(config_.target_frame, reference_time, sensor_frame_id, packet_time, config_.fixed_frame,
+                              transform);
     }
     catch (tf::LookupException& e)
     {
@@ -178,16 +180,16 @@ public:
       return false;
     }
 
-    const tf::Quaternion quaternion{transform.getRotation()};
+    const tf::Quaternion quaternion{ transform.getRotation() };
     const Eigen::Quaternionf rotation(quaternion.w(), quaternion.x(), quaternion.y(), quaternion.z());
-    const Eigen::Translation3f translation{vectorTfToEigen(transform.getOrigin())};
+    const Eigen::Translation3f translation{ vectorTfToEigen(transform.getOrigin()) };
     transformation = translation * rotation;
     return true;
   }
 
   inline void transformPoint(float& x, float& y, float& z)
   {
-    const Eigen::Vector3f p{transformation * Eigen::Vector3f(x, y, z)};
+    const Eigen::Vector3f p{ transformation * Eigen::Vector3f(x, y, z) };
     x = p.x();
     y = p.y();
     z = p.z();
@@ -206,7 +208,7 @@ public:
 protected:
   Config config_;
   boost::shared_ptr<tf::TransformListener> tf_ptr;  ///< transform listener
-  Eigen::Affine3f transformation{Eigen::Affine3f::Identity()};
+  Eigen::Affine3f transformation{ Eigen::Affine3f::Identity() };
 };
 } /* namespace velodyne_rawdata */
 #endif  // VELODYNE_POINTCLOUD_DATACONTAINERBASE_H

@@ -47,14 +47,12 @@
 
 namespace velodyne_driver
 {
-
-class DriverNodelet: public nodelet::Nodelet
+class DriverNodelet : public nodelet::Nodelet
 {
 public:
-
-  DriverNodelet():
-    running_(false)
-  {}
+  DriverNodelet() : running_(false)
+  {
+  }
 
   ~DriverNodelet()
   {
@@ -66,12 +64,12 @@ public:
     ros::Time::shutdown();
 
     if (running_)
-      {
-        NODELET_INFO("shutting down driver thread");
-        running_ = false;
-        deviceThread_->join();
-        NODELET_INFO("driver thread stopped");
-      }
+    {
+      NODELET_INFO("shutting down driver thread");
+      running_ = false;
+      deviceThread_->join();
+      NODELET_INFO("driver thread stopped");
+    }
   }
 
 private:
@@ -137,20 +135,21 @@ void DriverNodelet::onInit()
 /** @brief Device poll thread main loop. */
 void DriverNodelet::devicePoll()
 {
-  while(ros::ok())
+  while (ros::ok())
+  {
+    // poll device until end of file
+    running_ = dvr_->poll();
+    if (!running_)
     {
-      // poll device until end of file
-      running_ = dvr_->poll();
-      if (!running_)
-      {
-        ROS_ERROR_THROTTLE(1.0, "DriverNodelet::devicePoll - Failed to poll device.");
-        interface_state_ = State::ERROR;
-        dvr_->resetConnectionToInput(getPrivateNodeHandle());
-      }
-      else{
-        interface_state_ = State::STREAMING;
-      }
+      ROS_ERROR_THROTTLE(1.0, "DriverNodelet::devicePoll - Failed to poll device.");
+      interface_state_ = State::ERROR;
+      dvr_->resetConnectionToInput(getPrivateNodeHandle());
     }
+    else
+    {
+      interface_state_ = State::STREAMING;
+    }
+  }
   running_ = false;
 }
 

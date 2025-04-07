@@ -55,43 +55,41 @@ namespace velodyne_pointcloud
 {
 class Convert
 {
-  public:
-    using CloudNodeConfig = any_velodyne_pointcloud::CloudNodeConfig;
+public:
+  using CloudNodeConfig = any_velodyne_pointcloud::CloudNodeConfig;
 
-    Convert(
-        ros::NodeHandle node,
-        ros::NodeHandle private_nh,
-        std::string const & node_name = ros::this_node::getName());
-    ~Convert() {}
+  Convert(ros::NodeHandle node, ros::NodeHandle private_nh, std::string const& node_name = ros::this_node::getName());
+  ~Convert()
+  {
+  }
 
-  private:
-    void callback(CloudNodeConfig &config, uint32_t level);
-    void processScan(const any_velodyne_msgs::VelodyneScan::ConstPtr &scanMsg);
+private:
+  void callback(CloudNodeConfig& config, uint32_t level);
+  void processScan(const any_velodyne_msgs::VelodyneScan::ConstPtr& scanMsg);
 
-    boost::shared_ptr<dynamic_reconfigure::Server<CloudNodeConfig> > srv_;
+  boost::shared_ptr<dynamic_reconfigure::Server<CloudNodeConfig> > srv_;
 
-    boost::shared_ptr<velodyne_rawdata::RawData> data_;
-    ros::Subscriber velodyne_scan_;
-    ros::Publisher output_;
+  boost::shared_ptr<velodyne_rawdata::RawData> data_;
+  ros::Subscriber velodyne_scan_;
+  ros::Publisher output_;
 
-    boost::shared_ptr<velodyne_rawdata::DataContainerBase> container_ptr_;
+  boost::shared_ptr<velodyne_rawdata::DataContainerBase> container_ptr_;
 
-    boost::mutex reconfigure_mtx_;
+  boost::mutex reconfigure_mtx_;
 
-    /// configuration parameters
-    typedef struct
-    {
-      std::string target_frame;      ///< target frame
-      std::string fixed_frame;       ///< fixed frame
-      bool organize_cloud;           ///< enable/disable organized cloud structure
-      double max_range;              ///< maximum range to publish
-      double min_range;              ///< minimum range to publish
-      uint16_t num_lasers;           ///< number of lasers
-      int npackets;                  ///< number of packets to combine
-    }
-    Config;
-    Config config_;
-    bool first_rcfg_call;
+  /// configuration parameters
+  typedef struct
+  {
+    std::string target_frame;  ///< target frame
+    std::string fixed_frame;   ///< fixed frame
+    bool organize_cloud;       ///< enable/disable organized cloud structure
+    double max_range;          ///< maximum range to publish
+    double min_range;          ///< minimum range to publish
+    uint16_t num_lasers;       ///< number of lasers
+    int npackets;              ///< number of packets to combine
+  } Config;
+  Config config_;
+  bool first_rcfg_call;
 
   // diagnostics updater
   diagnostic_updater::Updater diagnostics_;

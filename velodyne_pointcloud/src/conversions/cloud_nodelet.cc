@@ -20,34 +20,34 @@
 
 namespace velodyne_pointcloud
 {
-  class CloudNodelet: public nodelet::Nodelet
+class CloudNodelet : public nodelet::Nodelet
+{
+public:
+  CloudNodelet()
   {
-  public:
-
-    CloudNodelet() {}
-    ~CloudNodelet() {
-        // Support that nodelets are shut down smoothly. Explicit tear down of ROS infrastructure 
-        // ensures that nodelet threads leave ROS-time-dependent sleeps.
-        // Request shutdown of the ROS node.
-        ros::requestShutdown();
-        // Shut down ROS time.
-        ros::Time::shutdown();
-    }
-
-  private:
-
-    virtual void onInit();
-    boost::shared_ptr<Convert> conv_;
-  };
-
-  /** @brief Nodelet initialization. */
-  void CloudNodelet::onInit()
+  }
+  ~CloudNodelet()
   {
-    conv_.reset(new Convert(getNodeHandle(), getPrivateNodeHandle(), getName()));
+    // Support that nodelets are shut down smoothly. Explicit tear down of ROS infrastructure
+    // ensures that nodelet threads leave ROS-time-dependent sleeps.
+    // Request shutdown of the ROS node.
+    ros::requestShutdown();
+    // Shut down ROS time.
+    ros::Time::shutdown();
   }
 
-} // namespace velodyne_pointcloud
+private:
+  virtual void onInit();
+  boost::shared_ptr<Convert> conv_;
+};
 
+/** @brief Nodelet initialization. */
+void CloudNodelet::onInit()
+{
+  conv_.reset(new Convert(getNodeHandle(), getPrivateNodeHandle(), getName()));
+}
+
+}  // namespace velodyne_pointcloud
 
 // Register this plugin with pluginlib.  Names must match nodelets.xml.
 //
